@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="reset.css">
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    body{
+        background-color: #e33fa0;
+        color: #fff;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        background-image: url(image/barbie.jpg);
+    }
+    .logo{
+        width: 1200px;
+        margin: auto;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .logo img{
+        width: 350px;
+    }
+    .wrap{
+        max-width: 1200px;
+        display: flex;
+        margin: auto;
+        background-color: #7acaef;
+        border-radius: 30px;
+        padding: 30px;
+
+    }
+    .cart{
+        width: 50%;
+    }
+    .cart img{
+        max-width: 200px;
+        padding: 10px;
+    }
+    .cart li{
+        display: flex;
+    }
+    .product-info{
+        font-size: 25px;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+
+    }
+    .product-info h3{
+        border-bottom: 1px solid #fff;
+    }
+    .product-info span{
+        font-size: 20px;
+        margin-right: 30px;
+    }
+
+    .product-info button{
+        width: 25px;
+        height: 25px;
+        font-size: 20px;
+        border: 0;
+        border-radius: 3px;
+        margin: 0 10px;
+        background-color: #e33fa0;
+        color: #fff;
+    }
+    .summary-wrap{
+        width: 50%;
+        border: 10px dotted #fff;
+        border-radius: 30px;
+        padding: 20px;
+        height: 500px;
+    }
+
+    .checkout-product .flex{
+        display: flex; 
+        height: 30px;
+        align-items: center;
+        justify-content: space-between;  
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        margin: 20px;
+        font-size: 20px;
+        }
+
+        .checkout-product button{
+            border-radius: 50%;
+            border: 0;
+            background-color: #e33fa0;
+            color: #fff;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+        }
+        .totalprice{
+            border-top: 1px solid #fff;
+            padding: 30px 0;
+            text-align: right;
+            font-size: 30px;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-weight:700;
+        }
+        .buy{
+            text-align: right;
+        }
+        .buy button{
+            font-size: 20px;
+            border: 0;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: 700;
+            border-radius: 3px;
+            background-color: #e33fa0;
+            color: #fff;
+            width: 100%;
+            height: 50px;
+        }
+
+</style>
+</head>
+<body>
+    <div id="app">
+        <div class="logo">
+            <img src="https://logo.com/image-cdn/images/kts928pd/production/4eb435769b8d8d259cd5d6cd59ffb38652907841-700x394.png?w=1080&q=72" alt="">
+        </div>
+        <div class="wrap">
+            <div class="cart">
+                <ul>
+                    <li v-for="(item,index) in product" :key="item.id">
+                        <img :src="item.imgUrl">
+                        <div class="product-info"> 
+                            <h3>{{item.name}}</h3>
+                            <span>NT${{item.price}}</span>
+                            <span>
+                                <button @click="subtract(item)">-</button>
+                                {{item.count}}
+                                <button @click="add(item)">+</button>
+                            </span>
+                         </div>
+                    </li>   
+                </ul>
+            </div>
+            <div class="summary-wrap">
+                <div class="checkout-product" v-for="(item,index) in product" :key="item.id">
+                    <div class="flex" v-if="item.count > 0">
+                            <h3>{{item.name}}</h3><span> x {{item.count}}</span><span>${{pricesum(item.price, item.count)}}</span>  <button @click="deleteItem(index)">x</button>
+                    </div>
+                </div>   
+                <div class="totalprice">${{totalAmount}}</div> 
+                <div class="buy">
+                <button>確認下單</button>
+                </div>
+            </div>
+       
+        
+    </div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    product: [
+                    {
+                    id: 1,
+                    name: '粉色搖滾芭比', 
+                    imgUrl: 'https://i.pinimg.com/564x/70/4d/11/704d11dfc41cde4aaedd1f9b8d363def.jpg', 
+                    price:'1290',
+                    count: 1
+                    },
+                    {
+                    id: 2,
+                    name: '度假名媛芭比',
+                    imgUrl: 'https://i.pinimg.com/564x/e9/5d/65/e95d65d1e306d2fe4cf559d9d318f60d.jpg',
+                    price:'1190',
+                    count: 1
+                    },
+                    {
+                    id: 3,
+                    name: '邪惡少女芭比',
+                    imgUrl: 'https://i.pinimg.com/564x/8b/eb/0f/8beb0fe1aee010537da45bd604847aac.jpg',
+                    price:'1090',
+                    count: 1
+                    },
+                    {
+                    id: 4,
+                    name: '冰雪皇后芭比',
+                    imgUrl: 'https://i.pinimg.com/564x/ca/43/08/ca43088ad7c6c3966074567c50c2f99f.jpg',
+                    price:'1090',
+                    count: 1
+                    },
+                    {
+                    id: 4,
+                    name: '優雅婚紗芭比',
+                    imgUrl: 'https://i.pinimg.com/564x/63/de/21/63de215c98d30d90b2f52605cf4ca0c7.jpg',
+                    price:'1590',
+                    count: 1
+                    }
+                    
+                    ]
+                }
+            },
+            computed: {
+                totalAmount() {
+                return this.product.reduce((total, item) => {
+                return total + (item.price * item.count);
+                }, 0);
+            }
+            },
+            methods: {
+                subtract(item){
+                    if(item.count > 1){
+                    item.count--
+                    }
+                },
+                add(item){
+                    item.count++
+                },
+                deleteItem(index){
+                    this.product.splice(index, 1)
+                },
+                pricesum(price, count){
+                    return price*count
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>
